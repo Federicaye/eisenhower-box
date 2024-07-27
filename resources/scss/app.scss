@@ -12,3 +12,14 @@ $fa-font-path: "../fonts/webfonts" !default;
 h1 {
     color: $text-color;
 }
+
+.navbar-f {
+    background-color: rgb(252, 252, 176);
+}
+
+#logo-eis {
+    position: absolute;
+    top: -10px;
+    left: -20px;
+    width: 150px;
+}
