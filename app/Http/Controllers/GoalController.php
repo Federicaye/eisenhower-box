@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Goal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class GoalController extends Controller
 {
@@ -12,7 +14,9 @@ class GoalController extends Controller
      */
     public function index()
     {
-        //
+        $id = Auth::id();
+        $goals = Goal::where('user_id', $id);
+        return view('admin.goals.index', compact('goals'));
     }
 
     /**
@@ -20,7 +24,8 @@ class GoalController extends Controller
      */
     public function create()
     {
-        //
+
+        return view('admin.goals.create');
     }
 
     /**
@@ -28,7 +33,15 @@ class GoalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id = Auth::id();
+        $form_data = $request->all();
+        $form_data['user_id'] = $id;
+        if ($request->hasFile('image'))
+        $name = $request->image->getClientOriginalName();
+        $path = Storage::putFileAs('goal_images', $request->image, $name);
+        $form_data['image'] = $path;
+        $new_goal = Goal::create($form_data);
+        return view('admin.goals.index');
     }
 
     /**
